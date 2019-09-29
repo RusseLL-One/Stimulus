@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "733828570063",
+    "firebase_url": "https://stimulus-cd229.firebaseio.com",
+    "project_id": "stimulus-cd229",
+    "storage_bucket": "stimulus-cd229.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733828570063:android:64e1cef1076e77196210ba",
+        "android_client_info": {
+          "package_name": "com.one.russell.stimulus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733828570063-1sc5c7j2ed3ibrb5nm0ocgj8hsfgm93v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQUBlb2d7oQxzQyN4X8DK6g257bQUyuW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733828570063-1sc5c7j2ed3ibrb5nm0ocgj8hsfgm93v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
