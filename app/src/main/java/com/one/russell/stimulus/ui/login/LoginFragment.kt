@@ -25,11 +25,6 @@ class LoginFragment : MvpAppCompatFragment(), LoginView {
         return LoginPresenter(getNavController(activity), GoogleAuth(requireContext()))
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
