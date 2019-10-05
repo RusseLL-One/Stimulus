@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.one.russell.stimulus.domain.Repository
 
 class Utils {
 
@@ -23,6 +24,13 @@ class Utils {
             }
         }
 
+        fun getRepository(activity: FragmentActivity?): Repository? {
+            return if (activity != null) {
+                (activity.application as App).getRepository()
+            } else {
+                null
+            }
+        }
 
     }
 }

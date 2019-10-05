@@ -1,5 +1,5 @@
-package com.one.russell.stimulus.ui.home_screen
-
+package com.one.russell.stimulus.ui.base
+/*
 import androidx.navigation.NavController
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import kotlin.random.Random
 
 @InjectViewState
-class HomePresenter(private val navController: NavController?, private val repository: Repository?) : MvpPresenter<HomeView>() {
+class BasePresenter(private val navController: NavController?, private val repository: Repository?) : MvpPresenter<HomeView>() {
 
     private var dbSubscription: Disposable? = null
 
@@ -25,11 +25,8 @@ class HomePresenter(private val navController: NavController?, private val repos
         viewState.showMessage("onAddTaskClicked")
 
         val task = Task(0, "Съешь булку" + (Random(System.currentTimeMillis()).nextInt() % 100), "съешь ещё этих мягких французских булок, да выпей чаю")
-        repository?.addTask(task)?.subscribe()
+        repository?.addTask(task)
+        viewState.onTaskAdded()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        dbSubscription?.dispose()
-    }
-}
+}*/

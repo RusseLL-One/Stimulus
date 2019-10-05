@@ -11,7 +11,6 @@ import com.google.android.gms.common.api.ApiException
 @InjectViewState
 class LoginPresenter(private val navController: NavController?, private val googleAuth: GoogleAuth) : MvpPresenter<LoginView>() {
 
-
     fun onLoginClicked() {
         navController?.navigate(R.id.action_loginFragment_to_homeFragment)
     }
