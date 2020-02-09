@@ -13,5 +13,17 @@ class TaskConverter {
         fun convertFromDomainToDb(task: Task): TaskEntity {
             return TaskEntity(task.id, task.title, task.description)
         }
+
+        fun convertFromWebToDomain(taskEntity: TaskEntity): Task {
+            return Task(taskEntity.id, taskEntity.title, taskEntity.description)
+        }
+
+        fun convertFromDomainToWeb(task: Task): Map<String, String> {
+            return mapOf(
+                "id" to task.id.toString(),
+                "title" to task.title,
+                "description" to task.description
+            )
+        }
     }
 }

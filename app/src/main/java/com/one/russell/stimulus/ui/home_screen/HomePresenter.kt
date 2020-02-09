@@ -3,18 +3,23 @@ package com.one.russell.stimulus.ui.home_screen
 import androidx.navigation.NavController
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.one.russell.stimulus.R
 import com.one.russell.stimulus.data.model.Task
 import com.one.russell.stimulus.domain.Repository
-import io.reactivex.disposables.Disposable
-import kotlin.random.Random
+import kotlinx.coroutines.*
 
 @InjectViewState
 class HomePresenter(private val navController: NavController?, private val repository: Repository?) : MvpPresenter<HomeView>() {
 
-    private var dbSubscription: Disposable? = null
+    private var screenScope = CoroutineScope(Job())
 
     fun getTasks() {
-        dbSubscription = repository?.observeAllTasks()?.subscribe({ viewState.onTasksLoaded(it) }, {  })
+        screenScope.launch(Dispatchers.Main) {
+            val tasks = repository?.observeAllTasks()
+            if (tasks != null) {
+                viewState.onTasksLoaded(tasks)
+            }
+        }
     }
 
     fun onTaskClicked(task: Task) {
@@ -24,12 +29,11 @@ class HomePresenter(private val navController: NavController?, private val repos
     fun onAddTaskClicked() {
         viewState.showMessage("onAddTaskClicked")
 
-        val task = Task(0, "Съешь булку" + (Random(System.currentTimeMillis()).nextInt() % 100), "съешь ещё этих мягких французских булок, да выпей чаю")
-        repository?.addTask(task)?.subscribe()
+        navController?.navigate(R.id.action_homeFragment_to_newTaskFragment)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        dbSubscription?.dispose()
+        screenScope.cancel()
     }
 }

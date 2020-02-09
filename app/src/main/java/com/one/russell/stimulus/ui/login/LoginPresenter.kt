@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.navigation.NavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.one.russell.stimulus.ui.login.auth.GoogleAuth
 
 @InjectViewState
 class LoginPresenter(private val navController: NavController?, private val googleAuth: GoogleAuth) : MvpPresenter<LoginView>() {

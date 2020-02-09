@@ -1,4 +1,4 @@
-package com.one.russell.stimulus.ui.home_screen
+package com.one.russell.stimulus.ui.new_task
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,41 +13,31 @@ import com.one.russell.stimulus.Utils
 import com.one.russell.stimulus.data.model.Task
 import com.one.russell.stimulus.ui.home_screen.list.TaskAdapter
 import kotlinx.android.synthetic.main.component_toolbar.*
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_new_task.*
+import kotlin.random.Random
 
-class HomeFragment : MvpAppCompatFragment(), HomeView {
+class NewTaskFragment : MvpAppCompatFragment(), NewTaskView {
     @InjectPresenter
-    lateinit var homePresenter: HomePresenter
+    lateinit var newTaskPresenter: NewTaskPresenter
 
     @ProvidePresenter
-    fun provideHomePresenter(): HomePresenter {
-        return HomePresenter(Utils.getNavController(activity), Utils.getRepository(activity))
+    fun provideNewTaskPresenter(): NewTaskPresenter {
+        return NewTaskPresenter(Utils.getNavController(activity), Utils.getRepository(activity))
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_home, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_new_task, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.setupToolbar(toolbar, Utils.getNavController(activity))
 
-        homePresenter.getTasks()
+        btn_submit.setOnClickListener {
+            val newTask = Task(Random(System.currentTimeMillis()).nextInt(), txt_title.text.toString(), txt_description.text.toString())
+            newTaskPresenter.onSubmit(newTask)
+        }
     }
-
-    override fun onTasksLoaded(taskList: List<Task>) {
-        val adapter = TaskAdapter(
-            taskList, requireContext(),
-            homePresenter::onTaskClicked,
-            homePresenter::onAddTaskClicked
-        )
-        list_tasks.adapter = adapter
-    }
-
-    override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
 }

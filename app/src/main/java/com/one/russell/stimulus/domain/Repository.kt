@@ -1,49 +1,60 @@
 package com.one.russell.stimulus.domain
 
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.one.russell.stimulus.data.database.AppDatabase
 import com.one.russell.stimulus.data.model.Task
 import com.one.russell.stimulus.domain.converters.TaskConverter
-import io.reactivex.Flowable
-import io.reactivex.Maybe
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.tasks.await
+
 
 class Repository(private val database: AppDatabase) {
 
-    fun observeAllTasks(): Flowable<List<Task>> {
+    val firebaseFirestore = FirebaseFirestore.getInstance()
+
+    //Database
+
+    suspend fun observeAllTasks(): List<Task> {
         return database.taskDao().observeAllTasks()
-            .map { list -> list.map { TaskConverter.convertFromDbToDomain(it) } }
-            .observeOn(AndroidSchedulers.mainThread())
+            .map { TaskConverter.convertFromDbToDomain(it) }
     }
 
-    fun getTask(id: Int): Maybe<Task> {
+    suspend fun getTask(id: Int): Task {
         return database.taskDao().getById(id)
-            .map { task -> TaskConverter.convertFromDbToDomain(task) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .let { task -> TaskConverter.convertFromDbToDomain(task) }
     }
 
-    fun addTask(newTask: Task): Maybe<Long> {
-        return Maybe.fromCallable { newTask }
-            .map { TaskConverter.convertFromDomainToDb(it) }
-            .flatMap { database.taskDao().insert(it)}
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    suspend fun addTask(newTask: Task): Long {
+        return newTask
+            .let { TaskConverter.convertFromDomainToDb(it) }
+            .let { database.taskDao().insert(it) }
     }
 
-    fun updateTask(editedTask: Task): Maybe<Int> {
-        return Maybe.fromCallable { editedTask }
-            .map { TaskConverter.convertFromDomainToDb(it) }
-            .flatMap { database.taskDao().update(it)}
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    suspend fun updateTask(editedTask: Task): Int {
+        return editedTask
+            .let { TaskConverter.convertFromDomainToDb(it) }
+            .let { database.taskDao().update(it) }
     }
 
-    fun deleteTask(task: Task): Maybe<Int> {
-        return Maybe.fromCallable { task }
-            .map { TaskConverter.convertFromDomainToDb(it) }
-            .flatMap { database.taskDao().delete(it)}
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    suspend fun deleteTask(task: Task): Int {
+        return task
+            .let { TaskConverter.convertFromDomainToDb(it) }
+            .let { database.taskDao().delete(it) }
+    }
+
+    // Web
+
+    suspend fun sendNewTask(newTask: Task) {
+        val sendTask = TaskConverter.convertFromDomainToWeb(newTask)
+        val documentReference = firebaseFirestore.collection("tasks").document(newTask.title)
+
+        try {
+            documentReference.set(sendTask).await()
+            /*val snapshot = usersRef.get().await()
+            val users = snapshot.toObjects(User::class.java)
+            updateUI(users)*/
+        } catch (e: FirebaseFirestoreException) {
+            //displayError()
+        }
     }
 }

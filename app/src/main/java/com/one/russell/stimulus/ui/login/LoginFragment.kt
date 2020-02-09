@@ -11,6 +11,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.one.russell.stimulus.R
 import com.one.russell.stimulus.Utils.Companion.getNavController
+import com.one.russell.stimulus.ui.login.auth.GoogleAuth
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : MvpAppCompatFragment(), LoginView {
@@ -22,7 +23,9 @@ class LoginFragment : MvpAppCompatFragment(), LoginView {
 
     @ProvidePresenter
     fun provideLoginPresenter(): LoginPresenter {
-        return LoginPresenter(getNavController(activity), GoogleAuth(requireContext()))
+        return LoginPresenter(getNavController(activity),
+            GoogleAuth(requireContext())
+        )
     }
 
     override fun onCreateView(

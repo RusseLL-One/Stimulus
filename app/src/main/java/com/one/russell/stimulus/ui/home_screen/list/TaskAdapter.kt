@@ -1,4 +1,4 @@
-package com.one.russell.stimulus.ui.home_screen
+package com.one.russell.stimulus.ui.home_screen.list
 
 import android.content.Context
 import android.view.LayoutInflater

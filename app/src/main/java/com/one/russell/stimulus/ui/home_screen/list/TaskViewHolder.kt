@@ -1,4 +1,4 @@
-package com.one.russell.stimulus.ui.home_screen
+package com.one.russell.stimulus.ui.home_screen.list
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
